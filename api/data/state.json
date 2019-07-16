@@ -1,5 +1,15 @@
 [
   {
-    "name": "Vacation"
+    "id": "1",
+    "name": "Vacation",
+    "items": [
+      {
+        "listId": "1",
+        "name": "pack shirts",
+        "description": "4 t-shirts, 5 long sleeve.",
+        "id": "-bVgEzDyf",
+        "done": true
+      }
+    ]
   }
 ]

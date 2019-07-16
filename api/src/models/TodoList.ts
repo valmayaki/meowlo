@@ -1,21 +1,14 @@
 import { ObjectType, Field, ID } from "type-graphql";
 import { TodoItem } from "./TodoItem";
-import { getAllLists } from "src/repository";
 
 @ObjectType()
 export class TodoList {
   @Field(type => ID)
-  id: number;
+  id: string;
 
   @Field()
-  title: string;
+  name: string;
 
-  // itemIds: string[] = [];
-
+  @Field(type => [TodoItem])
   items: TodoItem[];
-
-  @Field(type => TodoItem, { name: "items" })
-  public getItems() {
-    return;
-  }
 }
