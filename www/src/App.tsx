@@ -12,7 +12,6 @@ const Header = styled.header`
   flex-direction: column;
   align-items: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 `;
 
 const ListsGrid = styled.div`
@@ -34,7 +33,7 @@ export default () => {
   return (
     <StoreContext.Provider value={store}>
       <Header>
-        <p>Your Todo Lists:</p>
+        <h1>Your Todo Lists:</h1>
         <AddButton
           text="New List"
           onClick={async () => {

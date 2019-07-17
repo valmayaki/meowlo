@@ -1,6 +1,6 @@
 import React from "react";
 import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import { Delete } from "@material-ui/icons";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -16,8 +16,8 @@ interface Props {
 export default ({ text, onClick }: Props) => {
   return (
     <Container>
-      <Fab variant="extended" aria-label="Add" onClick={onClick}>
-        <AddIcon />
+      <Fab variant="extended" aria-label="Delete" onClick={onClick}>
+        <Delete />
         {text}
       </Fab>
     </Container>

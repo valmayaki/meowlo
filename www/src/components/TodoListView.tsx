@@ -5,11 +5,12 @@ import Card from "@material-ui/core/Card";
 import TodoItemView from "./TodoItemView";
 import AddButton from "./AddButton";
 import { SmallMargin } from "../styled/common";
-import { addNewItem } from "../graphql";
+import { addNewItem, clearDoneItems } from "../graphql";
 import { useStore } from "../context/store";
+import ClearButton from "./ClearButton";
 
 const Container = styled.div`
-  width: 16rem;
+  width: 20rem;
 `;
 
 const Header = styled.p`
@@ -17,6 +18,11 @@ const Header = styled.p`
   font-weight: bold;
   padding: 1rem;
   margin: 0;
+`;
+
+const ActionBar = styled.div`
+  display: grid;
+  grid: auto / auto auto;
 `;
 
 interface Props {
@@ -37,22 +43,32 @@ export default ({ list }: Props) => {
                 <TodoItemView item={item} listId={list.id} key={item.id} />
               );
             })}
-          <AddButton
-            text="New Item"
-            onClick={async () => {
-              const name = prompt("What do you need to do?");
-              if (name) {
-                await addNewItem({
-                  input: {
-                    name,
-                    listId: list.id,
-                    description: ""
-                  }
-                });
+          <ActionBar>
+            <AddButton
+              text="New Item"
+              onClick={async () => {
+                const name = prompt("What do you need to do?");
+                if (name) {
+                  await addNewItem({
+                    input: {
+                      name,
+                      listId: list.id,
+                      description: ""
+                    }
+                  });
+                  await store.refetch();
+                }
+              }}
+            />
+            <ClearButton
+              text="Clear Done"
+              onClick={async () => {
+                console.log("here");
+                await clearDoneItems(list.id);
                 await store.refetch();
-              }
-            }}
-          />
+              }}
+            />
+          </ActionBar>
         </Container>
       </Card>
     </SmallMargin>

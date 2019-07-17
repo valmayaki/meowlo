@@ -73,3 +73,14 @@ export async function completeItem(
   await saveChanges();
   return item;
 }
+
+export async function clearDoneItemsFromList(
+  listId: string
+): Promise<TodoList> {
+  const list = (await getAllLists()).find(l => l.id === listId);
+  if (!list) throw "Invalid List ID";
+
+  list.items = list.items.filter(item => !item.done);
+  await saveChanges();
+  return list;
+}

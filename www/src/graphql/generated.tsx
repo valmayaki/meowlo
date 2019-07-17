@@ -17,6 +17,7 @@ export type Mutation = {
   addList: TodoList;
   addItem: TodoItem;
   setItemDone: TodoItem;
+  clearDoneItems: TodoList;
 };
 
 export type MutationAddListArgs = {
@@ -30,6 +31,10 @@ export type MutationAddItemArgs = {
 export type MutationSetItemDoneArgs = {
   done: Scalars["Boolean"];
   itemId: Scalars["String"];
+  listId: Scalars["String"];
+};
+
+export type MutationClearDoneItemsArgs = {
   listId: Scalars["String"];
 };
 
@@ -77,6 +82,14 @@ export type AddNewListMutationVariables = {
 
 export type AddNewListMutation = { __typename?: "Mutation" } & {
   addList: { __typename?: "TodoList" } & Pick<TodoList, "id" | "name">;
+};
+
+export type ClearDoneItemsMutationVariables = {
+  listId: Scalars["String"];
+};
+
+export type ClearDoneItemsMutation = { __typename?: "Mutation" } & {
+  clearDoneItems: { __typename?: "TodoList" } & Pick<TodoList, "id">;
 };
 
 export type GetAllListsQueryVariables = {};
@@ -213,6 +226,59 @@ export function withAddNewList<TProps, TChildProps = {}>(
     AddNewListProps<TChildProps>
   >(AddNewListDocument, {
     alias: "withAddNewList",
+    ...operationOptions
+  });
+}
+export const ClearDoneItemsDocument = gql`
+  mutation ClearDoneItems($listId: String!) {
+    clearDoneItems(listId: $listId) {
+      id
+    }
+  }
+`;
+export type ClearDoneItemsMutationFn = ReactApollo.MutationFn<
+  ClearDoneItemsMutation,
+  ClearDoneItemsMutationVariables
+>;
+export type ClearDoneItemsComponentProps = Omit<
+  ReactApollo.MutationProps<
+    ClearDoneItemsMutation,
+    ClearDoneItemsMutationVariables
+  >,
+  "mutation"
+>;
+
+export const ClearDoneItemsComponent = (
+  props: ClearDoneItemsComponentProps
+) => (
+  <ReactApollo.Mutation<ClearDoneItemsMutation, ClearDoneItemsMutationVariables>
+    mutation={ClearDoneItemsDocument}
+    {...props}
+  />
+);
+
+export type ClearDoneItemsProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<
+    ClearDoneItemsMutation,
+    ClearDoneItemsMutationVariables
+  >
+> &
+  TChildProps;
+export function withClearDoneItems<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    ClearDoneItemsMutation,
+    ClearDoneItemsMutationVariables,
+    ClearDoneItemsProps<TChildProps>
+  >
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    ClearDoneItemsMutation,
+    ClearDoneItemsMutationVariables,
+    ClearDoneItemsProps<TChildProps>
+  >(ClearDoneItemsDocument, {
+    alias: "withClearDoneItems",
     ...operationOptions
   });
 }

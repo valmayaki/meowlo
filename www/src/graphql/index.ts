@@ -11,7 +11,10 @@ import {
   AddNewListMutation,
   SetItemDoneMutation,
   SetItemDoneMutationVariables,
-  SetItemDoneDocument
+  SetItemDoneDocument,
+  ClearDoneItemsMutation,
+  ClearDoneItemsMutationVariables,
+  ClearDoneItemsDocument
 } from "./generated";
 
 export interface ExecutionResult<T> {
@@ -67,5 +70,15 @@ export async function setItemDone(
       itemId,
       done
     }
+  });
+}
+
+export async function clearDoneItems(listId: string) {
+  return await apolloClient.mutate<
+    ClearDoneItemsMutation,
+    ClearDoneItemsMutationVariables
+  >({
+    mutation: ClearDoneItemsDocument,
+    variables: { listId }
   });
 }

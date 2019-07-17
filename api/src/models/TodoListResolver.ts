@@ -5,6 +5,7 @@ import { NewItemInput } from "./NewItemInput";
 import {
   getAllLists,
   addTodoList,
+  clearDoneItemsFromList,
   addItem as addTodoItem,
   completeItem as completeTodoItem
 } from "../repository";
@@ -32,5 +33,10 @@ export class TodoListResolver {
     @Arg("done") done: boolean
   ) {
     return await completeTodoItem(listId, itemId, done);
+  }
+
+  @Mutation(returns => TodoList)
+  public async clearDoneItems(@Arg("listId") listId: string) {
+    return await clearDoneItemsFromList(listId);
   }
 }
