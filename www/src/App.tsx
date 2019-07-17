@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import TodoListView from "./components/TodoListView";
+import AddButton from "./components/AddButton";
+import { useStoreFromProvider, StoreContext } from "./context/store";
+import { addNewList } from "./graphql";
 
-const App: React.FC = () => {
+const Header = styled.header`
+  background-color: #dadce0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+`;
+
+const ListsGrid = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export default () => {
+  const store = useStoreFromProvider({
+    lists: []
+  });
+
+  useEffect(() => {
+    (async () => {
+      await store.refetch();
+    })();
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StoreContext.Provider value={store}>
+      <Header>
+        <p>Your Todo Lists:</p>
+        <AddButton
+          text="New List"
+          onClick={async () => {
+            const name = prompt("New List Name:");
+            if (name) {
+              await addNewList(name);
+              await store.refetch();
+            }
+          }}
+        />
+        <ListsGrid>
+          {store.lists.map(list => {
+            return <TodoListView list={list} key={list.id} />;
+          })}
+        </ListsGrid>
+      </Header>
+    </StoreContext.Provider>
   );
-}
-
-export default App;
+};

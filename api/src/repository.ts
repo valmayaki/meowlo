@@ -17,7 +17,7 @@ async function readFile(filename: string): Promise<string> {
 
 async function saveChanges() {
   if (_state) {
-    const json = JSON.stringify(_state);
+    const json = JSON.stringify(_state, null, 2);
     return new Promise((resolve, reject) => {
       fs.writeFile(STATE_FILE, json, err => {
         if (err) reject(err);
@@ -48,9 +48,20 @@ export async function addItem(itemInput: NewItemInput): Promise<TodoItem> {
   return newItem;
 }
 
+export async function addTodoList(name: string): Promise<TodoList> {
+  const allLists = await getAllLists();
+  const newList = new TodoList({
+    name
+  });
+  allLists.push(newList);
+  await saveChanges();
+  return newList;
+}
+
 export async function completeItem(
   listId: string,
-  itemId: string
+  itemId: string,
+  done: boolean
 ): Promise<TodoItem> {
   const list = (await getAllLists()).find(l => l.id === listId);
   if (!list) throw "Invalid List ID";
@@ -58,8 +69,7 @@ export async function completeItem(
   const item = list.items.find(i => i.id === itemId);
   if (!item) throw "Invalid Item ID";
 
-  if (item.done) throw "That item is already complete";
-  item.done = true;
+  item.done = done;
   await saveChanges();
   return item;
 }

@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from "type-graphql";
 import { TodoItem } from "./TodoItem";
+import shortid from "shortid";
 
 @ObjectType()
 export class TodoList {
@@ -10,5 +11,10 @@ export class TodoList {
   name: string;
 
   @Field(type => [TodoItem])
-  items: TodoItem[];
+  items: TodoItem[] = [];
+
+  constructor(init: Partial<TodoList>) {
+    Object.assign(this, init);
+    this.id = shortid.generate();
+  }
 }

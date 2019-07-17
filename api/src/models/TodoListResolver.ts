@@ -1,9 +1,10 @@
 import { Query, Mutation, Arg } from "type-graphql";
-import { getAllLists } from "../repository";
 import { TodoList } from "./todoList";
 import { TodoItem } from "./TodoItem";
 import { NewItemInput } from "./NewItemInput";
 import {
+  getAllLists,
+  addTodoList,
   addItem as addTodoItem,
   completeItem as completeTodoItem
 } from "../repository";
@@ -14,16 +15,22 @@ export class TodoListResolver {
     return await getAllLists();
   }
 
+  @Mutation(returns => TodoList)
+  public async addList(@Arg("name") name: string) {
+    return await addTodoList(name);
+  }
+
   @Mutation(returns => TodoItem)
   public async addItem(@Arg("input") input: NewItemInput) {
     return await addTodoItem(input);
   }
 
   @Mutation(returns => TodoItem)
-  public async completeItem(
+  public async setItemDone(
     @Arg("listId") listId: string,
-    @Arg("itemId") itemId: string
+    @Arg("itemId") itemId: string,
+    @Arg("done") done: boolean
   ) {
-    return await completeTodoItem(listId, itemId);
+    return await completeTodoItem(listId, itemId, done);
   }
 }
