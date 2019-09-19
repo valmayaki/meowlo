@@ -2,7 +2,8 @@ require("dotenv").config();
 
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
-import { buildAppSchema } from "./schema";
+import { TodoListResolver } from "./models/TodoListResolver";
+import { buildSchema } from "type-graphql";
 
 process.on("SIGINT", () => {
   console.log("Shutting down...");
@@ -11,7 +12,10 @@ process.on("SIGINT", () => {
 
 (async () => {
   const server = new ApolloServer({
-    schema: await buildAppSchema()
+    schema: await buildSchema({
+      resolvers: [TodoListResolver],
+      validate: false
+    })
   });
 
   const { url } = await server.listen(process.env.PORT || 80);
