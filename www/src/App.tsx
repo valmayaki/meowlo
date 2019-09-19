@@ -24,11 +24,12 @@ export default () => {
     lists: []
   });
 
+  // to make the effect run only once, pass in empty array as second argument
   useEffect(() => {
     (async () => {
       await store.refetch();
     })();
-  });
+  }, []);
 
   return (
     <StoreContext.Provider value={store}>
