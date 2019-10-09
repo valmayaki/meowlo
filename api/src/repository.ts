@@ -1,4 +1,4 @@
-import { TodoList } from "./models/todoList";
+import { TodoList } from "./models/TodoList";
 import fs from "fs";
 import { NewItemInput } from "./models/NewItemInput";
 import { TodoItem } from "./models/TodoItem";
