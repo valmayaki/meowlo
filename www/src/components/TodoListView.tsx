@@ -63,7 +63,6 @@ export default ({ list }: Props) => {
             <ClearButton
               text="Clear Done"
               onClick={async () => {
-                console.log("here");
                 await clearDoneItems(list.id);
                 await store.refetch();
               }}
